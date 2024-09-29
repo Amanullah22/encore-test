@@ -2,14 +2,18 @@ import React, { useState, useEffect } from "react";
 import ReactDependentScript from 'react-dependent-script';
 import SearchBar from "./Search";
 import Map from "./Map";
+import { useDispatch, useSelector } from "react-redux";
+import { getPredictions, clearPredictions } from "../Redux/ApplicationReducer";
 import './index.css'
 
 const MainComponent = () => {
     const [search, setSearch] = useState('')
-    const [suggestions, setSuggestions] = useState([])
+    //const [suggestions, setSuggestions] = useState([])
     const [selectedId, setSelectedId] = useState(null)
     const [autocompleteService, setAutocompleteService] = useState(null)
     const [geocoder, setGeocoder] = useState(null)
+    const dispatch = useDispatch();
+    const suggestions = useSelector((state) => state.google.predictions)
     const google = window.google;
 
     useEffect(() => {
@@ -23,29 +27,15 @@ const MainComponent = () => {
 
     useEffect(() => {
         if (search.length && autocompleteService) {
-            autocompleteService.getPredictions({ input: search }, getSuggestions);
+            dispatch(getPredictions({
+                autocompleteService,
+                search
+            }))
         } else {
-            setSuggestions([])
+            dispatch(clearPredictions())
             setSelectedId(null)
         }
     }, [search, autocompleteService])
-
-    const getSuggestions = (data) => {
-        if (search.length) {
-            let newSuggestions = []
-            data.map((item) => {
-                const { description, place_id } = item
-                let suggestionObject = {
-                    label: description,
-                    value: place_id
-                }
-                newSuggestions.push(suggestionObject)
-            })
-            setSuggestions(newSuggestions)
-        } else {
-            setSuggestions([])
-        }
-    }
 
     const initializeGooglePlaces = () => {
         return <div className="mainContainer">
