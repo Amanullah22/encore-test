@@ -1,7 +1,10 @@
 import React from "react";
 import { AutoComplete } from 'antd';
+import { useSelector } from "react-redux";
 
-const SearchBar = ({ search, setSearch, suggestions, selectedId }) => {
+const SearchBar = ({ search, setSearch, selectedId }) => {
+    const suggestions = useSelector((state) => state.google.predictions)
+
     const getSelectedOptionName = (optionId) => {
         let filteredOptionName = suggestions.filter((item) => {
             return item.value === optionId
