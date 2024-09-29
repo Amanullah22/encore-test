@@ -14,15 +14,12 @@ const MainComponent = () => {
     const [geocoder, setGeocoder] = useState(null)
     const dispatch = useDispatch();
     const google = window.google;
-
     const contentStyle = {
         padding: 50,
         background: 'rgba(0, 0, 0, 0.05)',
         borderRadius: 4,
     };
-
     const content = <div style={contentStyle} />;
-
 
     useEffect(() => {
         if (google) {
