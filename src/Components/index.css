@@ -10,3 +10,10 @@
     margin: 50px auto;
     border-radius: 10px;
 }
+
+@media screen and (max-width: 1000px) {
+    .mapContainer {
+        width: 500px;
+        height: 600px;
+    }
+}
